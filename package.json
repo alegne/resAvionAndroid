@@ -1,0 +1,14 @@
+{
+  "name": "resavionandroid",
+  "version": "1.0.0",
+  "description": "application pour la reservation d'avion avec Express.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lensalegne",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
