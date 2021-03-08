@@ -1,8 +1,5 @@
 const dbConn = require('../../config/dbConfig');
 
-
-
-
 let Avion = function(avion){
     this.numAvion = avion.numAvion.toUpperCase();
     this.design = avion.design;
@@ -85,5 +82,6 @@ Avion.delAvion = function(id, result){
         }
     });
 };
+
 
 module.exports = Avion;

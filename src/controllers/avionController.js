@@ -1,7 +1,7 @@
 const AvionModel = require('../models/avionModel');
 const Joi = require('joi');
 
-let pattern = '/^[0-9]+[AV | av]$/'
+//let pattern = '/^[0-9]+[AV | av]$/'
 
 const shema = Joi.object({
     numAvion: Joi.string().max(10).regex(/^[0-9]+av|AV$/),
@@ -45,18 +45,14 @@ exports.getAvionId = function(req, res){
 
 //pour l'enregistrement d'un avion
 exports.storeAvion = function(req, res){
-
     const result = shema.validate(req.body);
-
   if (result.error) {
       res.sendStatus(422).json({
           message:'Données entrées non valide',
           data: req.body,
       });
   } else {
-
       const reqAvion = new AvionModel(req.body);
-      
       AvionModel.addAvion(reqAvion, function(error, avion){
           if (error) {
               console.log(error);
