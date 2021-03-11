@@ -2,15 +2,16 @@ const Avion = require('../models/avionModel');
 const Voyageur = require('../models/voyageurModel');
 const Reservation = require('../models/resModel');
 const Joi = require('joi');
-const { func } = require('joi');
 
 
 const shema = Joi.object({
     frais: Joi.number().required(),
     dateDepart: Joi.date().min('now').required(),
+    //dateDepart: Joi.string(),
     nom: Joi.string(),
     cin: Joi.string().max(15),
     numPhone: Joi.string().max(15),
+    avion: Joi.string().max(10).regex(/^[0-9]+av|AV$/),
 });
 
 //function pour prendre tous les listes des reservations
@@ -56,7 +57,7 @@ exports.storeReservation = function(req, res){
         });
     } else {
         
-        
+        res.json({status: true, message: "mandeha store reservation io"})
         //logique de l'enregistrement d'une reservation
 
 
@@ -77,7 +78,7 @@ exports.updateVoyageur = function(req, res){
         });
     } else {
 
-
+        res.json({message: "mandeha update reservation io"})
         //logique de la mise a jour d'une reservation
 
         
