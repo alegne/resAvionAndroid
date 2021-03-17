@@ -101,7 +101,7 @@ exports.storeReservation = async function(req, res){
 
 
 //function pour la mise à jour d'un voyageur
-exports.updateVoyageur = function(req, res){
+exports.updateVoyageur = async function(req, res){
     const result = shema.validate(req.body);
     if (result.error) {
         res.sendStatus(422).json({
@@ -109,7 +109,42 @@ exports.updateVoyageur = function(req, res){
             data: req.body,
         });
     } else {
+        let voyageur = await Voyageur.getCinVoyageur(req.body.cin);
+        let avion = await Avion.getNumAvion(req.body.numAvion);
+        
+        if (voyageur.length == 0) {
+            const reqVoyageur = new Voyageur(req.body);
 
+            Voyageur.addVoyageur(reqVoyageur, function(error, voyageur){
+                if (error) {
+                    console.log(error)
+                    res.json({status: false, message: "Erreru lors de l'ajour de voyageur", data: voyageur});
+                }
+            });
+
+            voyageur = await Voyageur.getCinVoyageur(req.body.cin);
+            
+            const reqReservation = new Reservation(req.body, avion[0], voyageur[0]);
+            Reservation.upReservation(req.params.id, reqReservation, function(error, reservation){
+                if (error) {
+                    console.log(error)
+                    res.json({status: false, message: "Erreru lors de l'ajour d'une reservation", data: reservation});
+                } else {
+                    res.json({status: true, message: "Mise a jour de la reservation reussi", data: reservation});
+                }
+            });
+
+        } else {
+            const reqReservation = new Reservation(req.body, avion[0], voyageur[0]);
+            Reservation.upReservation(req.params.id, reqReservation, function(error, reservation){
+                if (error) {
+                    console.log(error)
+                    res.json({status: false, message: "Erreru lors de l'ajour d'une reservation", data: reservation});
+                } else {
+                    res.json({status: true, message: "Mise a jour de la reservation reussi", data: reservation});
+                }
+            });
+        }
         
 
         
