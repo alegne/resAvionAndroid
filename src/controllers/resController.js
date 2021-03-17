@@ -110,8 +110,7 @@ exports.updateVoyageur = function(req, res){
         });
     } else {
 
-        res.json({message: "mandeha update reservation io"})
-        //logique de la mise a jour d'une reservation
+        
 
         
     }
