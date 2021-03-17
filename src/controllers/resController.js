@@ -11,7 +11,7 @@ const shema = Joi.object({
     nom: Joi.string(),
     cin: Joi.string().max(15),
     numPhone: Joi.string().max(15),
-    avion: Joi.string().max(10).regex(/^[0-9]+av|AV$/),
+    numAvion: Joi.string().max(10).regex(/^[0-9]+av|AV$/),
 });
 
 //function pour prendre tous les listes des reservations
@@ -48,7 +48,7 @@ exports.getReservationId = function(req, res){
 
 
 //function pour ajouter une reservation
-exports.storeReservation = function(req, res){  
+exports.storeReservation = async function(req, res){  
     const result = shema.validate(req.body);
     if (result.error) {
         res.sendStatus(422).json({
@@ -56,11 +56,43 @@ exports.storeReservation = function(req, res){
             data: req.body,
         });
     } else {
+        let voyageur = await Voyageur.getCinVoyageur(req.body.cin);
+        let avion = await Avion.getNumAvion(req.body.numAvion);
         
-        res.json({status: true, message: "mandeha store reservation io"})
-        //logique de l'enregistrement d'une reservation
+        if (voyageur.length == 0) {
+            const reqVoyageur = new Voyageur(req.body);
 
+            Voyageur.addVoyageur(reqVoyageur, function(error, voyageur){
+                if (error) {
+                    console.log(error)
+                    res.json({status: false, message: "Erreru lors de l'ajour de voyageur", data: voyageur});
+                }
+            });
 
+            voyageur = await Voyageur.getCinVoyageur(req.body.cin);
+            
+            const reqReservation = new Reservation(req.body, avion[0], voyageur[0]);
+            Reservation.addReservation(reqReservation, function(error, reservation){
+                if (error) {
+                    console.log(error)
+                    res.json({status: false, message: "Erreru lors de l'ajour d'une reservation", data: reservation});
+                } else {
+                    res.json({status: true, message: "Reservation bien enregistrée", data: reservation});
+                }
+            });
+
+        } else {
+            const reqReservation = new Reservation(req.body, avion[0], voyageur[0]);
+            Reservation.addReservation(reqReservation, function(error, reservation){
+                if (error) {
+                    console.log(error)
+                    res.json({status: false, message: "Erreru lors de l'ajour d'une reservation", data: reservation});
+                } else {
+                    res.json({status: true, message: "Reservation bien enregistrée", data: reservation});
+                }
+            });
+        }
+        
     }
 };
 

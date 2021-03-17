@@ -44,6 +44,23 @@ Voyageur.getIdVoyageur = function(id, result){
 
 
 
+
+//function pour get one voyageur by son Cin
+Voyageur.getCinVoyageur = function(cin){
+    return new Promise(function(resolve, reject){
+        dbConn.query('SELECT * FROM voyageur WHERE cin = ?', [cin], function(error, res){
+            if (error) {
+                console.log("Erreur lors de la requete get sur la table voyageur par son cin");
+            } else {
+                resolve(res);
+            }
+        });
+    });      
+};
+
+
+
+
 //function pour store one voyageur
 Voyageur.addVoyageur = function(reqVoyageur, result){
     dbConn.query('INSERT INTO voyageur SET ?', reqVoyageur, function(error, res){

@@ -42,6 +42,21 @@ Avion.getIdAvion = function(id, result){
 
 
 
+//function pour get one avion by its numAvion
+Avion.getNumAvion = function(numAvion){
+    return new Promise(function(resolve, reject){
+        dbConn.query('SELECT * FROM avion WHERE numAvion = ?', [numAvion], function(error, res){
+            if (error) {
+                console.log("Erreur lors de la requete get sur la table avion par son id");
+            } else {
+                resolve(res);
+            }
+        })
+    })
+};
+
+
+
 //function pour store one avion
 Avion.addAvion = function(reqAvion, result){
     dbConn.query('INSERT INTO avion SET ?', reqAvion, function(error, res){
