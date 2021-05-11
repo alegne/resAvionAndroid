@@ -105,5 +105,13 @@ Voyageur.delVoyageur = function(id, result){
     });
 };
 
+Voyageur.delReservationVoyageur = function(id){
+    dbConn.query('DELETE FROM reservation WHERE reservation.idVoyageur = ?', [id], function(error, res){
+        if (error) {
+            console.log("Erruer lors de la suppression d'un voyageur");
+        }
+    });
+};
+
 
 module.exports = Voyageur;

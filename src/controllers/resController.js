@@ -5,9 +5,9 @@ const Joi = require('joi');
 
 
 const shema = Joi.object({
-    frais: Joi.number().required(),
-    dateDepart: Joi.date().min('now').required(),
-    //dateDepart: Joi.string(),
+    frais: Joi.string().required(),
+    //dateDepart: Joi.date().min('now').required(),
+    dateDepart: Joi.string(),
     nom: Joi.string(),
     cin: Joi.string().max(15),
     numPhone: Joi.string().max(15),
@@ -65,7 +65,7 @@ exports.storeReservation = async function(req, res){
             Voyageur.addVoyageur(reqVoyageur, function(error, voyageur){
                 if (error) {
                     console.log(error)
-                    res.json({status: false, message: "Erreru lors de l'ajour de voyageur", data: voyageur});
+                    res.json({status: false, message: "Erreur lors de l'ajout du voyageur", data: voyageur});
                 }
             });
 

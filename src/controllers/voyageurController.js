@@ -92,6 +92,11 @@ exports.updateVoyageur = function(req, res){
 
 //function pour la suppression d'un voyageur
 exports.deleteVoyageur = function(req, res){
+    VoyageurModel.delReservationVoyageur(req.params.id, function(error, voyageur){
+        if (error) {
+            console.log(error);
+        }
+    })
     VoyageurModel.delVoyageur(req.params.id, function(error, voyageur){
         if (error) {
             console.log(error);

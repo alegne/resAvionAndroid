@@ -4,7 +4,6 @@ const Recette = require("../models/recetteModel");
 
 const schemaYears = Joi.object({
     numAvion: Joi.string().max(10).regex(/^[0-9]+av|AV$/).required(),
-
 })
 
 const schemaMonth = Joi.object({
@@ -14,14 +13,14 @@ const schemaMonth = Joi.object({
 })
 
 exports.getRecetteByYears = async function(req, res){
-    const result = schemaYears.validate(req.body);
+    const result = schemaYears.validate(req.query);
     if (result.error) {
         res.sendStatus(422).json({
             message: 'Données entrées non valide',
             data: req.body,
         });
     } else {
-        let avion = await Avion.getNumAvion(req.body.numAvion);
+        let avion = await Avion.getNumAvion(req.query.numAvion);
 
         Recette.getRecetteYears(avion[0].id, function(error, recette){
             if (error) {
@@ -57,4 +56,15 @@ exports.getRecetteByMonth = async function(req, res){
             }
         })
     }
+}
+
+exports.getAllRecette = async function(req, res){
+        Recette.getRecette(function(error, recette){
+            if (error) {
+                console.log(error);
+                res.sendStatus(500);
+            } else {
+                res.json(recette);
+            }
+        });
 }

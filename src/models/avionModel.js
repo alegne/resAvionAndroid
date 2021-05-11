@@ -3,8 +3,8 @@ const dbConn = require('../../config/dbConfig');
 let Avion = function(avion){
     this.numAvion = avion.numAvion.toUpperCase();
     this.design = avion.design;
-    this.depart = avion.depart.toUpperCase();
-    this.arrivee = avion.arrivee.toUpperCase();
+    this.depart = avion.depart;
+    this.arrivee = avion.arrivee;
     this.created_at = new Date();
     this.update_at = new Date();
 };

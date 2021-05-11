@@ -21,3 +21,14 @@ exports.getRecetteMonth = function(idAvion, annee, results){
         }
     })
 }
+
+exports.getRecette = function(results){
+    dbConn.query('SELECT avion.numAvion as avion, SUM(reservation.frais) as recette FROM reservation INNER JOIN avion WHERE reservation.idAvion=avion.id GROUP BY avion.numAvion', function(error, res){
+        if (error) {
+            console.log("Erreur lors de la requete get sur la recette par mois")
+            results(null, error)
+        } else {
+            results(null, res)
+        }
+    })
+}
